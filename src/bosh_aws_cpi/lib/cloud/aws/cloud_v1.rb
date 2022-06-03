@@ -204,6 +204,7 @@ module Bosh::AwsCloud
       with_thread_name("create_disk(#{size}, #{instance_id})") do
         props = @props_factory.disk_props(cloud_properties)
 
+        # TODO: GX-7317: REVIEW: Why isn't the `tags` param passed to `VolumeProperties.new` here?
         volume_properties = VolumeProperties.new(
           size: size,
           type: props.type,
@@ -279,6 +280,13 @@ module Bosh::AwsCloud
       get_volume_ids_for_vm(@ec2_resource.instance(vm_id))
     end
 
+    # TODO: GX-7317: REVIEW: CloudV1#set_disk_metadata: Is the #set_disk_metadata method responsible for setting volumes' tags (as a separate step from volume creation and CloudV1#create_disk)?
+    # TODO: GX-7317: REVIEW: CloudV1#set_disk_metadata: Review all external callers of the #set_disk_metadata method, and see if they reliably include tags config in the `metadata` param value.
+    # NOTE: CloudV1#set_disk_metadata is part of the Bosh CPI API v2.
+    # Within the AWS CPI, it seems like it is ONLY called by spec code.
+    # SEE: https://bosh.io/docs/cpi-api-v2-method/set-disk-metadata/
+    # SEE ALSO: https://bosh.io/docs/cpi-api-v2-method/create-disk/
+    # SEE ALSO: https://bosh.io/docs/cpi-api-v2-method/attach-disk/
     def set_disk_metadata(disk_id, metadata)
       with_thread_name("set_disk_metadata(#{disk_id}, ...)") do
         begin
@@ -466,6 +474,7 @@ module Bosh::AwsCloud
           )
         end
 
+        # TODO: GX-7317: REVIEW: Why isn't the `tags` param passed to `VolumeProperties.new` here?
         disk_config = VolumeProperties.new(
           size: stemcell_cloud_props.disk,
           az: @az_selector.select_availability_zone(director_vm_id),

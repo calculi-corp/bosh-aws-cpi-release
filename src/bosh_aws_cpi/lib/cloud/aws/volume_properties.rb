@@ -29,6 +29,8 @@ module Bosh
         mapping[:encrypted] = @encrypted if @encrypted
         mapping[:kms_key_id] = @kms_key_arn if @kms_key_arn
 
+        # TODO: GX-7317: REVIEW: Why isn't a `:tag_specifications` added here? SEE: https://github.com/cloudfoundry/bosh-aws-cpi-release/blob/42331379f1e4d1fe0caa7184ed6a98503341238e/src/bosh_aws_cpi/lib/cloud/aws/volume_properties.rb#L46-L50
+
         { device_name: '/dev/sdb', ebs: mapping }
       end
 
@@ -67,6 +69,8 @@ module Bosh
         if @type == 'gp3' && @throughput.to_i.positive?
           root_device[:throughput] = @throughput
         end
+
+        # TODO: GX-7317: REVIEW: Why isn't a `:tag_specifications` added here? SEE: https://github.com/cloudfoundry/bosh-aws-cpi-release/blob/42331379f1e4d1fe0caa7184ed6a98503341238e/src/bosh_aws_cpi/lib/cloud/aws/volume_properties.rb#L46-L50
 
         {
           device_name: @root_device_name,

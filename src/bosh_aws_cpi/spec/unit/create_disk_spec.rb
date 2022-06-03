@@ -79,6 +79,8 @@ describe Bosh::AwsCloud::CloudV1 do
       end
     end
 
+    # TODO: GX-7317: Add/implement missing specs here?
+
     describe 'encryption' do
       it 'defaults to unencrypted' do
         @cloud.create_disk(2048, {})

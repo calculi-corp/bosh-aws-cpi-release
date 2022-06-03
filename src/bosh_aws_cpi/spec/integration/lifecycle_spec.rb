@@ -115,6 +115,8 @@ describe 'lifecycle test' do
         instance = cpi_v2.ec2_resource.instance(instance_id)
         expect(instance.tags).to_not be_nil
       end
+
+      # TODO: GX-7317: Add/implement missing specs here?
     end
 
     context 'stemcell is specified as v1' do

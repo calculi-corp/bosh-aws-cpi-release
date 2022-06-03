@@ -136,6 +136,7 @@ module Bosh::AwsCloud
           disk_size = disk_info.size_in_mb
         end
 
+        # TODO: GX-7317: REVIEW: Why isn't the `tags` param passed to `VolumeProperties.new` here?
         result = VolumeProperties.new(
           size: disk_size,
           type: ephemeral_disk.type,
@@ -182,6 +183,7 @@ module Bosh::AwsCloud
     end
 
     def user_specified_root_disk_mapping
+      # TODO: GX-7317: REVIEW: Why isn't the `tags` param passed to `VolumeProperties.new` here?
       disk_properties = VolumeProperties.new(
         size: @vm_cloud_props.root_disk.size,
         type: @vm_cloud_props.root_disk.type,
@@ -194,6 +196,7 @@ module Bosh::AwsCloud
     end
 
     def default_root_disk_mapping
+      # TODO: GX-7317: REVIEW: Why isn't the `tags` param passed to `VolumeProperties.new` here?
       disk_properties = VolumeProperties.new(
         virtualization_type: @virtualization_type,
         root_device_name: root_device_name,

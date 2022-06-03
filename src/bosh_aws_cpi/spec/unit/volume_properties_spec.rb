@@ -12,6 +12,10 @@ module Bosh::AwsCloud
         encrypted: true,
         kms_key_arn: 'my_fake_kms_arn',
         root_device_name: '/dev/sda',
+        # TODO: GX-7317: REVIEW: Is the tags test data below a valid example? It seems like tags should be an Array of Hashes with `key` and `value` keys (instead of `name` and `value` keys).
+        # SEE: https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/EC2/Types/Volume.html#tags-instance_method
+        # SEE: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Volume.html
+        # SEE: https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Tag.html
         tags: [{name: "foo", value: "bar"}]
       }
     end
@@ -45,6 +49,11 @@ module Bosh::AwsCloud
               encrypted: true,
               kms_key_id: 'my_fake_kms_arn',
               delete_on_termination: true,
+              # TODO: GX-7317: REVIEW: Why isn't a `:tag_specifications` included here? SEE: https://github.com/cloudfoundry/bosh-aws-cpi-release/blob/42331379f1e4d1fe0caa7184ed6a98503341238e/src/bosh_aws_cpi/spec/unit/volume_properties_spec.rb#L79-L82
+              # tag_specifications: [{
+              #   resource_type: 'volume',
+              #   tags: [{name: "foo", value: "bar"}]
+              # }],
             }
           )
         end
@@ -111,6 +120,11 @@ module Bosh::AwsCloud
               volume_type: 'io1',
               iops: 1,
               delete_on_termination: true,
+              # TODO: GX-7317: REVIEW: Why isn't a `:tag_specifications` included here? SEE: https://github.com/cloudfoundry/bosh-aws-cpi-release/blob/42331379f1e4d1fe0caa7184ed6a98503341238e/src/bosh_aws_cpi/spec/unit/volume_properties_spec.rb#L79-L82
+              # tag_specifications: [{
+              #   resource_type: 'volume',
+              #   tags: [{name: "foo", value: "bar"}]
+              # }],
             }
           })
         end
