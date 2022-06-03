@@ -80,6 +80,30 @@ describe Bosh::AwsCloud::CloudV1 do
     end
 
     # TODO: GX-7317: Add/implement missing specs here?
+    describe 'volume tags' do
+      it 'defaults to no tags' do
+        @cloud.create_disk(2048, {})
+
+        expect(@ec2.client).to have_received(:create_volume) do |params|
+          expect(params[:tags]).to eq([])
+          expect(params[:tag_specifications]).to be_nil
+        end
+      end
+
+      it 'is configurable via cloud properties' do
+        # TODO: GX-7317: REVIEW: Is the tags test data below a valid/correct example?
+        @cloud.create_disk(2048, { 'tags' => [{ 'tag1' => 'value1' }] })
+        # @cloud.create_disk(2048, { 'tags' => [{ 'tag1' => 'value1' }].map { |k, v| { key: k, value: v } })
+
+        expect(@ec2.client).to have_received(:create_volume) do |params|
+          expect(params[:tags]).to eq([{ 'tag1' => 'value1' }])
+          expect(params[:tag_specifications]).to eq([{
+                                                       resource_type: 'volume',
+                                                       tags: [{key: 'tag1', value: 'value1'}]
+                                                     }])
+        end
+      end
+    end
 
     describe 'encryption' do
       it 'defaults to unencrypted' do

@@ -117,6 +117,7 @@ describe 'lifecycle test' do
       end
 
       # TODO: GX-7317: Add/implement missing specs here?
+      it 'creates volumes with tags'
     end
 
     context 'stemcell is specified as v1' do
